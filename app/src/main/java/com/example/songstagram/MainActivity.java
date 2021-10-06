@@ -1,5 +1,10 @@
 package com.example.songstagram;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -77,6 +82,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    ActivityResultLauncher<Intent>  someAcitivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                   // int resultCode = result.getResultCode();
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // by this point we have the camera photo on disk
+                        Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        // RESIZE BITMAP, see section below
+                        // Load the taken image into a preview
+                        ivPostImage.setImageBitmap(takenImage);
+                    } else { // Result was a failure
+                        Toast.makeText(MainActivity.this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
     private void launchCamera() {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -93,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getPackageManager()) != null) {
             // Start the image capture intent to take photo
-            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            //startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            someAcitivityResultLauncher.launch(intent);
         }
     }
 
@@ -131,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
     private void savePost(String description, ParseUser currentUser, File photoFile) {
         Post post = new Post();
         post.setDescription(description);
-        post.setImage(new ParseFile(photoFile));
+       // post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
         post.saveInBackground(new SaveCallback() {
             @Override

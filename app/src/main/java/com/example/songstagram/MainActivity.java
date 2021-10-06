@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnCaptureImage;
     private ImageView ivPostImage;
     private Button btnSubmit;
+    private Button btnLogout;
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
@@ -55,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
         btnSubmit = findViewById(R.id.btnSubmit);
+        btnLogout = findViewById(R.id.btnLogout);
+
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                /*if(photoFile==null || ivPostImage.getDrawable()==null){
+                if(photoFile==null || ivPostImage.getDrawable()==null){
                     Toast.makeText(MainActivity.this, "There is no image", Toast.LENGTH_SHORT).show();
                     return;
-                } */
+                }
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 savePost(description, currentUser, photoFile);
             }
@@ -155,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
     private void savePost(String description, ParseUser currentUser, File photoFile) {
         Post post = new Post();
         post.setDescription(description);
-       // post.setImage(new ParseFile(photoFile));
+        post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -167,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Post saved Successfully ! ");
                 etDescription.setText("");
                 ivPostImage.setImageResource(0);
+
             }
         });
     }

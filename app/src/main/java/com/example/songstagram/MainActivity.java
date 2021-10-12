@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
 
 
+
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +93,24 @@ public class MainActivity extends AppCompatActivity {
                 savePost(description, currentUser, photoFile);
             }
         });
+       // setupListWithFooter();
     }
+
+    // Adds footer to the list default hidden progress
+  /*  public void setupListWithFooter() {
+        // Find the ListView
+        ListView lvItems = (ListView) findViewById(R.id.lvItems);
+        // Inflate the footer
+        View footer = getLayoutInflater().inflate(
+                R.layout.footer_progress, null);
+        // Find the progressbar within footer
+        progressBarFooter = (ProgressBar)
+                footer.findViewById(R.id.pbFooterLoading);
+        // Add footer to ListView before setting adapter
+        lvItems.addFooterView(footer);
+        // Set the adapter AFTER adding footer
+        lvItems.setAdapter(myAdapter);
+    } */
 
     ActivityResultLauncher<Intent>  someAcitivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

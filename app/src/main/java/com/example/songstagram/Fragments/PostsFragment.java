@@ -33,6 +33,7 @@ public class PostsFragment extends Fragment {
     protected PostsAdapter adapter;
     protected List<Post> allPosts;
 
+
     public PostsFragment() {
         // Required empty public constructor
     }
@@ -59,7 +60,8 @@ public class PostsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Log.i(TAG, "fetching new data");
-                fetchTimeLine();
+                fetchMoreData(0);
+                swipeContainer.setRefreshing(false);
             }
         });
         //Steps to use the recycler view;
@@ -76,10 +78,11 @@ public class PostsFragment extends Fragment {
         queryPosts();
     }
 
-    private void fetchTimeLine() {
-         adapter.clear();
-         queryPosts();
+    private void fetchMoreData(int i) {
+       adapter.clear();
+       queryPosts();
     }
+
 
     protected void queryPosts() {
         // Specify which class to query

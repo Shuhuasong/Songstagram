@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.songstagram.LoginActivity;
 import com.example.songstagram.MainActivity;
 import com.example.songstagram.Post;
 import com.example.songstagram.R;
@@ -86,7 +87,16 @@ public class ComposeFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                currentUser.logOut();
+                Toast.makeText(getContext(), "Logout", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                //Intent i = new Intent(this, MainActivity.class);
+
+                startActivity(intent);
+               // finish();
+
+                //getActivity().finish();
             }
         });
 

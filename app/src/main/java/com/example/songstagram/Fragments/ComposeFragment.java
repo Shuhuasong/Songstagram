@@ -95,7 +95,7 @@ public class ComposeFragment extends Fragment {
 
                 startActivity(intent);
                // finish();
-
+               Log.i("Tag", "sdfasd");
                 //getActivity().finish();
             }
         });
